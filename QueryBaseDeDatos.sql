@@ -9,23 +9,18 @@ id INT IDENTITY(1,1) PRIMARY KEY,
 [votos] INT
 )
 
-CREATE TABLE #ResultadoTemporal (
-    TempID INT IDENTITY(1,1) PRIMARY KEY,
-    candidato VARCHAR(255),
-    votos INT,
-    porcentaje DECIMAL(5,2)
-);
-
--- Calcular el porcentaje y almacenarlo en la tabla temporal
-DECLARE @TotalVotos INT;
-SELECT @TotalVotos = SUM(votos) FROM elecciones_2019;
-
-INSERT INTO #ResultadoTemporal (candidato, votos, porcentaje)
-SELECT candidato, votos, (votos * 100.0 / @TotalVotos) AS porcentaje
-FROM elecciones_2019;
+CREATE VIEW vista_2019 
+AS SELECT
+	[candidato],
+	SUM([votos]) AS CantidadDeVotos,
+	CAST(SUM([votos]) * 100.0 / SUM(SUM([votos])) OVER () AS DECIMAL(10, 2)) AS Porcentaje
+	FROM
+	elecciones_2019
+GROUP BY
+	[candidato]
 
 
-select * from #ResultadoTemporal
+
 
 --DATOS:
 INSERT INTO [elecciones_2019] ([departamento], [candidato], [votos]) VALUES

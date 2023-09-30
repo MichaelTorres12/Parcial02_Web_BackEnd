@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using BackendAV100520TC100220.Models;
 using BackendAV100520TC100220.Context;
+using BackendAV100520TC100220.Models;
 
 namespace BackendAV100520TC100220.Controllers
 {
@@ -114,6 +114,13 @@ namespace BackendAV100520TC100220.Controllers
             await _context.SaveChangesAsync();
 
             return NoContent();
+        }
+
+        [HttpGet("vista-elecciones-2019")]
+        public IActionResult GetVistaElecciones()
+        {
+            var data = _context.Vista2019s.ToList();
+            return Ok(data);
         }
 
         private bool Elecciones2019Exists(int id)
