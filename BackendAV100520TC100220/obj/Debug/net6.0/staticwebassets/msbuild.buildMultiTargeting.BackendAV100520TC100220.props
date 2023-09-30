@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\BackendAV100520TC100220.props" />
+</Project>
